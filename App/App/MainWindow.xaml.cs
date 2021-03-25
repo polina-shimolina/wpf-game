@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace App
 {
@@ -20,58 +21,66 @@ namespace App
     /// </summary>
     public partial class MainWindow : Window
     {
+        double left = l.Margin.Left;
+        double right = l.Margin.Right;
+        double top = l.Margin.Top;
+        double bottom = l.Margin.Bottom;
         public MainWindow()
         {
             InitializeComponent();
         }
 
+        private DispatcherTimer timer = null;
+        private int x;
 
+        private void timerStart()
+        {
+            timer = new DispatcherTimer(); 
+            timer.Tick += new EventHandler(dispatcherTimer_Tick);
+            timer.Interval = new TimeSpan(0, 0, 1);
+            timer.Start();
+        }
+        private void dispatcherTimer_Tick()
+        { 
+            int n = 0;
+            if (n > 6) { top += 2; n++; } else { top -= 2; n++; } 
+            
+            
+        }
         private void L_KeyDown(object sender, KeyEventArgs e)
         {
             double left = l.Margin.Left;
             double right = l.Margin.Right;
             double top = l.Margin.Top;
             double bottom = l.Margin.Bottom;
-            switch (e.Key)
+
+            if (Keyboard.IsKeyDown(Key.A))
             {
-                case Key.A:
-                    left -= 2;
-                    break;
-                case Key.D:
-                    left += 2;
-                    break;
-                //прыжок
-                default:
-                    break;
+                left -= 2;
+                l.Margin = new Thickness(left, top, right, bottom);
             }
-            l.Margin = new Thickness(left, top, right, bottom);
+            if (Keyboard.IsKeyDown(Key.D))
+            {
+                left += 2;
+                l.Margin = new Thickness(left, top, right, bottom);
+            }
+            if (Keyboard.IsKeyUp(Key.W))
+            {
+                
+            }
+            if (Keyboard.IsKeyUp(Key.A) && Keyboard.IsKeyUp(Key.W))
+            {
+                
+            }
+            if (Keyboard.IsKeyUp(Key.D) && Keyboard.IsKeyUp(Key.W))
+            {
+                
+            }
+            
         }
     }
 
-        //private void L_KeyDown(object sender, KeyEventArgs e)
-        //{
-        //    if (Keyboard.IsKeyDown(Key.A))
-        //    {
-        //        l.Margin = new Thickness(-2, 0, 0, 0);
-        //    }
-        //    if (Keyboard.IsKeyDown(Key.D))
-        //    {
-        //        l.Margin = new Thickness(+2, 0, 0, 0);
-        //    }
-        //    if (Keyboard.IsKeyUp(Key.Space))
-        //    {
-        //        //прыжок
-        //    }
-        //    if (Keyboard.IsKeyUp(Key.A) && Keyboard.IsKeyUp(Key.W))
-        //    {
-        //        //прыжок
-        //    }
-        //    if (Keyboard.IsKeyUp(Key.D) && Keyboard.IsKeyUp(Key.W))
-        //    {
-        //        //прыжок
-        //    }
 
-        //}
 
 }
 
